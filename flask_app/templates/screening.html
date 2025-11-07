@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Screening - Perinatal Mental Health{% endblock %}
+
+{% block content %}
+<div class="screening-container">
+    <div class="container">
+        <div class="screening-header">
+            <h1>Mental Health Screening</h1>
+            <p>Please answer all questions as honestly as possible. All responses are confidential.</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <p class="progress-text">
+                <span id="currentQuestion">1</span> of <span id="totalQuestions">10</span> questions
+            </p>
+        </div>
+
+        <!-- Questionnaire Form -->
+        <form id="screeningForm">
+            <div id="questionsContainer"></div>
+
+            <!-- Navigation Buttons -->
+            <div class="form-navigation">
+                <button type="button" class="btn btn-secondary" id="prevBtn" disabled>
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button type="button" class="btn btn-primary" id="nextBtn">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
+                    <i class="fas fa-check-circle"></i> View Results
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div id="loadingModal" class="modal">
+    <div class="modal-content">
+        <div class="spinner"></div>
+        <p>Calculating your results...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/screening.js') }}"></script>
+{% endblock %}

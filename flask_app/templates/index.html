@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Perinatal Mental Health Screening{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Perinatal Mental Health Screening</h1>
+            <p class="hero-subtitle">A confidential screening to help identify your risk for perinatal depression or anxiety</p>
+
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>10-15 min</h3>
+                    <p>Completion Time</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clipboard-question"></i>
+                    <h3>10 Questions</h3>
+                    <p>Simple & Clear</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-lock"></i>
+                    <h3>Confidential</h3>
+                    <p>Your Privacy Protected</p>
+                </div>
+            </div>
+
+            <a href="/screening" class="btn btn-primary btn-large">
+                <i class="fas fa-play-circle"></i> Start Screening
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-file-lines"></i>
+                </div>
+                <h3>1. Answer Questions</h3>
+                <p>Complete a brief 10-question screening covering your mental health, lifestyle, and healthcare access.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>2. Get Your Results</h3>
+                <p>Receive an immediate risk assessment based on validated clinical tools (PHQ-2) and evidence-based guidelines.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h3>3. Access Resources</h3>
+                <p>Get personalized referrals to healthcare providers and mental health resources tailored to your situation.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">What This Screening Includes</h2>
+
+        <div class="feature-list">
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <h4>PHQ-2 Depression Screening</h4>
+                    <p>Validated clinical tool used by healthcare providers worldwide</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <h4>Mental Health History</h4>
+                    <p>Assessment of prior treatment and current medications</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <h4>Lifestyle Factors</h4>
+                    <p>Evaluation of exercise, diet, and overall health status</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <h4>Healthcare Access</h4>
+                    <p>Understanding your current care setting for personalized referrals</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="container">
+        <div class="cta-box">
+            <h2>Ready to Begin?</h2>
+            <p>This confidential screening takes about 10-15 minutes and provides immediate results with personalized recommendations.</p>
+            <a href="/screening" class="btn btn-primary btn-large">
+                <i class="fas fa-arrow-right"></i> Start Your Screening
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="section bg-danger">
+    <div class="container">
+        <div class="crisis-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <h3>In Crisis? Get Immediate Help</h3>
+                <p>If you're experiencing a mental health emergency, please reach out now:</p>
+                <div class="crisis-links">
+                    <a href="tel:988" class="btn btn-light">Call 988</a>
+                    <a href="sms:741741?body=HOME" class="btn btn-light">Text HOME to 741741</a>
+                    <a href="/resources" class="btn btn-outline-light">View All Resources</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

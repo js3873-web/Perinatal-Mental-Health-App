@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Resources - Perinatal Mental Health{% endblock %}
+
+{% block content %}
+<div class="resources-container">
+    <div class="container">
+        <div class="resources-header">
+            <h1><i class="fas fa-book-medical"></i> Mental Health Resources</h1>
+            <p>Access crisis support, information, and professional help</p>
+        </div>
+
+        <!-- Crisis Resources -->
+        <div class="card card-crisis">
+            <div class="card-header bg-danger">
+                <h2><i class="fas fa-exclamation-triangle"></i> Crisis Resources - Available 24/7</h2>
+            </div>
+            <div class="card-body">
+                <p class="crisis-intro">If you're in crisis or experiencing thoughts of self-harm, please reach out immediately:</p>
+
+                {% if crisis_resources and crisis_resources.hotlines %}
+                <div class="crisis-resources-list">
+                    {% for hotline in crisis_resources.hotlines %}
+                    <div class="crisis-resource-item">
+                        <div class="crisis-icon">
+                            <i class="fas fa-phone-volume"></i>
+                        </div>
+                        <div class="crisis-content">
+                            <h3>{{ hotline.name }}</h3>
+                            {% if hotline.phone %}
+                            <p class="crisis-phone">
+                                <strong>Phone:</strong>
+                                <a href="tel:{{ hotline.phone.replace('-', '').replace(' ', '') }}">{{ hotline.phone }}</a>
+                                {% if hotline.phone_alternate %}
+                                or <a href="tel:{{ hotline.phone_alternate.replace('-', '').replace(' ', '') }}">{{ hotline.phone_alternate }}</a>
+                                {% endif %}
+                                {% if hotline.phone_numeric %}
+                                (<a href="tel:{{ hotline.phone_numeric.replace('-', '').replace(' ', '') }}">{{ hotline.phone_numeric }}</a>)
+                                {% endif %}
+                            </p>
+                            {% endif %}
+
+                            {% if hotline.text %}
+                            <p class="crisis-text">
+                                <strong>Text:</strong> {{ hotline.text }}
+                                {% if hotline.text_en %}
+                                (English: <a href="sms:{{ hotline.text_en }}">{{ hotline.text_en }}</a>
+                                {% endif %}
+                                {% if hotline.text_es %}
+                                Spanish: <a href="sms:{{ hotline.text_es }}">{{ hotline.text_es }}</a>)
+                                {% endif %}
+                            </p>
+                            {% endif %}
+
+                            {% if hotline.available %}
+                            <p class="crisis-hours"><i class="fas fa-clock"></i> {{ hotline.available }}</p>
+                            {% endif %}
+
+                            {% if hotline.specialization %}
+                            <p class="crisis-specialty"><i class="fas fa-star"></i> <em>{{ hotline.specialization }}</em></p>
+                            {% endif %}
+
+                            {% if hotline.service %}
+                            <p class="crisis-service">{{ hotline.service }}</p>
+                            {% endif %}
+
+                            {% if hotline.languages %}
+                            <p class="crisis-languages">
+                                <i class="fas fa-language"></i> Available in: {{ hotline.languages | join(', ') }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="crisis-resources-list">
+                    <div class="crisis-resource-item">
+                        <div class="crisis-icon"><i class="fas fa-phone-volume"></i></div>
+                        <div class="crisis-content">
+                            <h3>988 Suicide & Crisis Lifeline</h3>
+                            <p class="crisis-phone"><strong>Phone:</strong> <a href="tel:988">988</a> or <a href="tel:18002738255">1-800-273-8255</a></p>
+                            <p class="crisis-hours"><i class="fas fa-clock"></i> 24/7</p>
+                        </div>
+                    </div>
+
+                    <div class="crisis-resource-item">
+                        <div class="crisis-icon"><i class="fas fa-comment"></i></div>
+                        <div class="crisis-content">
+                            <h3>Crisis Text Line</h3>
+                            <p class="crisis-text"><strong>Text:</strong> HOME to 741741</p>
+                            <p class="crisis-hours"><i class="fas fa-clock"></i> 24/7</p>
+                        </div>
+                    </div>
+
+                    <div class="crisis-resource-item">
+                        <div class="crisis-icon"><i class="fas fa-heart"></i></div>
+                        <div class="crisis-content">
+                            <h3>Postpartum Support International Helpline</h3>
+                            <p class="crisis-phone"><strong>Phone:</strong> <a href="tel:18009444773">1-800-944-4773</a></p>
+                            <p class="crisis-hours"><i class="fas fa-clock"></i> 24/7</p>
+                            <p class="crisis-specialty"><i class="fas fa-star"></i> <em>Perinatal mental health specialists</em></p>
+                        </div>
+                    </div>
+
+                    <div class="crisis-resource-item">
+                        <div class="crisis-icon"><i class="fas fa-baby"></i></div>
+                        <div class="crisis-content">
+                            <h3>National Maternal Mental Health Hotline</h3>
+                            <p class="crisis-phone"><strong>Phone:</strong> <a href="tel:18338526262">1-833-TLC-MAMA (1-833-852-6262)</a></p>
+                            <p class="crisis-hours"><i class="fas fa-clock"></i> 24/7</p>
+                            <p class="crisis-specialty"><i class="fas fa-star"></i> <em>Support for pregnant and postpartum individuals</em></p>
+                            <p class="crisis-languages"><i class="fas fa-language"></i> Available in English and Spanish</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="emergency-alert">
+                    <i class="fas fa-ambulance"></i>
+                    <strong>Emergency:</strong> If you or someone you know is in immediate danger, call <a href="tel:911">911</a> or go to your nearest emergency department.
+                </div>
+            </div>
+        </div>
+
+        <!-- About the Screening -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-info-circle"></i> About This Screening</h2>
+            </div>
+            <div class="card-body">
+                <h3>Evidence-Based Assessment</h3>
+                <p>This screening tool is based on:</p>
+                <ul>
+                    <li><strong>PHQ-2 (Patient Health Questionnaire-2)</strong> - A validated depression screener widely used by healthcare providers</li>
+                    <li><strong>PRAMS Phase 8 Data</strong> - CDC's Pregnancy Risk Assessment Monitoring System (2016-2021, N=178,299 respondents)</li>
+                    <li><strong>Clinical Guidelines</strong> - Follows ACOG recommendations for perinatal depression screening</li>
+                </ul>
+
+                <h3>Clinical Validation</h3>
+                <ul>
+                    <li>PHQ-2 Sensitivity: 83% | Specificity: 92%</li>
+                    <li>Our algorithm prioritizes sensitivity (~95%) to minimize missed cases</li>
+                    <li>Recommended by American College of Obstetricians and Gynecologists (ACOG)</li>
+                </ul>
+
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Important Disclaimer:</strong> This screening is for informational purposes only and does not constitute a clinical diagnosis. All users identified as high risk should be referred to qualified mental health professionals for comprehensive evaluation and treatment.
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Resources -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-link"></i> Additional Support Resources</h2>
+            </div>
+            <div class="card-body">
+                <div class="resource-categories">
+                    <div class="resource-category">
+                        <h3><i class="fas fa-users"></i> Support Organizations</h3>
+                        <ul>
+                            <li><strong>Postpartum Support International:</strong> <a href="https://www.postpartum.net" target="_blank">www.postpartum.net</a></li>
+                            <li><strong>ACOG Perinatal Mental Health:</strong> <a href="https://www.acog.org" target="_blank">www.acog.org</a></li>
+                            <li><strong>National Alliance on Mental Illness:</strong> <a href="https://www.nami.org" target="_blank">www.nami.org</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="resource-category">
+                        <h3><i class="fas fa-mobile-alt"></i> Mental Health Apps</h3>
+                        <ul>
+                            <li><strong>Talkspace</strong> - Online therapy platform</li>
+                            <li><strong>BetterHelp</strong> - Licensed therapist matching</li>
+                            <li><strong>Maven Clinic</strong> - Perinatal-specific telehealth</li>
+                            <li><strong>Headspace</strong> - Meditation and mindfulness</li>
+                        </ul>
+                    </div>
+
+                    <div class="resource-category">
+                        <h3><i class="fas fa-book"></i> Educational Resources</h3>
+                        <ul>
+                            <li><strong>CDC PRAMS:</strong> <a href="https://www.cdc.gov/prams" target="_blank">www.cdc.gov/prams</a></li>
+                            <li><strong>NIH Mental Health:</strong> <a href="https://www.nimh.nih.gov" target="_blank">www.nimh.nih.gov</a></li>
+                            <li><strong>What to Expect:</strong> Mental health during pregnancy resources</li>
+                        </ul>
+                    </div>
+
+                    <div class="resource-category">
+                        <h3><i class="fas fa-search"></i> Find Local Help</h3>
+                        <ul>
+                            <li><strong>SAMHSA Treatment Locator:</strong> <a href="https://findtreatment.samhsa.gov" target="_blank">findtreatment.samhsa.gov</a></li>
+                            <li><strong>Psychology Today:</strong> Find therapists specializing in perinatal mental health</li>
+                            <li><strong>FQHC Locator:</strong> Find community health clinics near you</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Take Action -->
+        <div class="cta-box">
+            <h2>Ready to Take the Next Step?</h2>
+            <p>Complete our confidential screening to get personalized recommendations.</p>
+            <a href="/screening" class="btn btn-primary btn-large">
+                <i class="fas fa-clipboard-check"></i> Start Screening
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics Dashboard - Perinatal Mental Health{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="container">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-chart-line"></i> Analytics Dashboard</h1>
+            <p>Aggregate data from all screening responses</p>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="stats-grid" id="summaryStats">
+            <div class="stat-card-large">
+                <i class="fas fa-users"></i>
+                <h2 id="totalResponses">0</h2>
+                <p>Total Responses</p>
+            </div>
+            <div class="stat-card-large high-risk">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h2 id="highRiskCount">0</h2>
+                <p>High Risk</p>
+            </div>
+            <div class="stat-card-large low-risk">
+                <i class="fas fa-check-circle"></i>
+                <h2 id="lowRiskCount">0</h2>
+                <p>Low Risk</p>
+            </div>
+            <div class="stat-card-large">
+                <i class="fas fa-percentage"></i>
+                <h2 id="highRiskPercent">0%</h2>
+                <p>High Risk Rate</p>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <!-- Risk Distribution -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-pie-chart"></i> Risk Distribution</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="riskDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- PHQ-2 Distribution -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-bar"></i> PHQ-2 Score Distribution</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="phq2DistributionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Risk Factors -->
+            <div class="card card-wide">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-column"></i> Risk Factors Prevalence</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="riskFactorsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Care Settings -->
+            <div class="card card-wide">
+                <div class="card-header">
+                    <h3><i class="fas fa-hospital"></i> Healthcare Settings Distribution</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="careSettingsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Data Message -->
+        <div id="noDataMessage" class="alert alert-info" style="display: none;">
+            <i class="fas fa-info-circle"></i>
+            No data available yet. Complete the <a href="/screening">screening</a> to see analytics.
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

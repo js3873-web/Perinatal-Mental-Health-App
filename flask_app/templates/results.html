@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Your Results - Perinatal Mental Health{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <div class="container">
+        <div class="results-header">
+            <h1>Your Screening Results</h1>
+            <p class="timestamp">Completed on {{ result.timestamp[:10] if result else 'N/A' }}</p>
+        </div>
+
+        {% if risk_result %}
+        <!-- Risk Classification -->
+        <div class="result-card {% if risk_result.classification == 'HIGH_RISK' %}risk-high{% else %}risk-low{% endif %}">
+            <div class="result-badge">
+                {% if risk_result.classification == 'HIGH_RISK' %}
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>HIGH RISK - Action Recommended</span>
+                {% else %}
+                <i class="fas fa-check-circle"></i>
+                <span>Low Risk - You're Doing Well</span>
+                {% endif %}
+            </div>
+
+            <div class="result-content">
+                {% if risk_result.classification == 'HIGH_RISK' %}
+                <p class="result-main">Based on your responses, you are currently at <strong>HIGH RISK</strong> for perinatal depression or anxiety.</p>
+                <p>This is <strong>common</strong> (affects 15-20% of pregnant people) and <strong>treatable</strong>.</p>
+                {% else %}
+                <p class="result-main">Based on your responses, you are currently at <strong>LOW RISK</strong> for perinatal depression or anxiety.</p>
+                <p>This is good news! However, it's important to monitor your mood throughout pregnancy and after delivery.</p>
+                {% endif %}
+            </div>
+
+            <div class="result-reason">
+                <h4><i class="fas fa-info-circle"></i> Classification Reason</h4>
+                <p>{{ risk_result.reason }}</p>
+            </div>
+
+            <div class="result-scores">
+                <h4><i class="fas fa-chart-bar"></i> Your Scores</h4>
+                <div class="scores-grid">
+                    <div class="score-item">
+                        <div class="score-value">{{ risk_result.phq2_total }}/6</div>
+                        <div class="score-label">Depression Screening (PHQ-2)</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value">{{ risk_result.high_risk_flags }}</div>
+                        <div class="score-label">High-Risk Factors</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value">{{ risk_result.lifestyle_risk }}/3</div>
+                        <div class="score-label">Lifestyle Risk Factors</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Steps -->
+        {% if risk_result.classification == 'HIGH_RISK' %}
+        <div class="card">
+            <div class="card-header bg-warning">
+                <h3><i class="fas fa-clipboard-list"></i> Immediate Next Steps</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <strong>Important:</strong> Please contact a healthcare provider within 24-48 hours.
+                </div>
+
+                <h4>Recommended Actions:</h4>
+                <ol class="action-list">
+                    <li>Contact a healthcare provider TODAY or tomorrow</li>
+                    <li>Complete a full depression assessment</li>
+                    <li>Use crisis resources below if symptoms worsen</li>
+                </ol>
+            </div>
+        </div>
+        {% else %}
+        <div class="card">
+            <div class="card-header bg-success">
+                <h3><i class="fas fa-clipboard-list"></i> Recommended Next Steps</h3>
+            </div>
+            <div class="card-body">
+                <ul class="action-list">
+                    <li>Continue monitoring your mental health</li>
+                    <li>Discuss mental health with your prenatal care provider</li>
+                    <li>Re-screen in 2-4 weeks or if you notice mood changes</li>
+                    <li>Practice preventive self-care strategies</li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Care Pathway -->
+        {% if routing %}
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-route"></i> Your Recommended Care Path</h3>
+            </div>
+            <div class="card-body">
+                {% if routing.existing_provider %}
+                <div class="alert alert-info">
+                    <i class="fas fa-check"></i>
+                    <strong>You have an existing provider relationship</strong><br>
+                    Contact your healthcare provider first. This is often the fastest path to care.
+                </div>
+                {% endif %}
+
+                <div class="care-setting">
+                    <h4>Based on your typical care setting:</h4>
+                    <p class="setting-name"><i class="fas fa-hospital"></i> {{ routing.setting_name }}</p>
+                    <p>{{ routing.referral_text }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Crisis Resources -->
+        <div class="card card-crisis">
+            <div class="card-header bg-danger">
+                <h3><i class="fas fa-phone-volume"></i> Crisis Resources - Available Now (24/7)</h3>
+            </div>
+            <div class="card-body">
+                <div class="crisis-resources-grid">
+                    <a href="tel:988" class="crisis-resource-card">
+                        <i class="fas fa-phone"></i>
+                        <h4>988 Suicide & Crisis Lifeline</h4>
+                        <p>Call or text - 24/7 support</p>
+                    </a>
+
+                    <a href="sms:741741?body=HOME" class="crisis-resource-card">
+                        <i class="fas fa-comment"></i>
+                        <h4>Crisis Text Line</h4>
+                        <p>Text HOME to 741741</p>
+                    </a>
+
+                    <a href="tel:18009444773" class="crisis-resource-card">
+                        <i class="fas fa-heart"></i>
+                        <h4>PSI Helpline</h4>
+                        <p>1-800-944-4773 (perinatal specific)</p>
+                    </a>
+
+                    <a href="tel:18338526262" class="crisis-resource-card">
+                        <i class="fas fa-baby"></i>
+                        <h4>National Maternal MH Hotline</h4>
+                        <p>1-833-852-6262</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Self-Care (for low risk) -->
+        {% if risk_result.classification == 'LOW_RISK' %}
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-spa"></i> Self-Care Strategies</h3>
+            </div>
+            <div class="card-body">
+                <div class="self-care-grid">
+                    <div class="self-care-item">
+                        <i class="fas fa-running"></i>
+                        <h4>Stay Active</h4>
+                        <p>Regular exercise can boost mood (walking, prenatal yoga, swimming)</p>
+                    </div>
+                    <div class="self-care-item">
+                        <i class="fas fa-users"></i>
+                        <h4>Connect with Others</h4>
+                        <p>Join prenatal support groups or connect with other expecting parents</p>
+                    </div>
+                    <div class="self-care-item">
+                        <i class="fas fa-bed"></i>
+                        <h4>Prioritize Sleep</h4>
+                        <p>Aim for 7-9 hours per night</p>
+                    </div>
+                    <div class="self-care-item">
+                        <i class="fas fa-brain"></i>
+                        <h4>Practice Mindfulness</h4>
+                        <p>Simple breathing exercises and meditation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Actions -->
+        <div class="result-actions">
+            <a href="/screening" class="btn btn-primary">
+                <i class="fas fa-redo"></i> Start New Screening
+            </a>
+            <button onclick="window.print()" class="btn btn-secondary">
+                <i class="fas fa-print"></i> Print Results
+            </button>
+            <a href="/resources" class="btn btn-secondary">
+                <i class="fas fa-book-medical"></i> View All Resources
+            </a>
+        </div>
+
+        {% else %}
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            No results available. Please <a href="/screening">complete the screening</a> first.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

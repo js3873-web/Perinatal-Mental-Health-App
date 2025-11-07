@@ -1,0 +1,660 @@
+{
+  "screening_metadata": {
+    "version": "1.0",
+    "total_questions": 10,
+    "conditional_questions": 1,
+    "estimated_time_minutes": "10-15",
+    "risk_levels": ["LOW_RISK", "HIGH_RISK"],
+    "based_on": "PRAMS Phase 8 (2016-2021, N=178,299) + PHQ-2"
+  },
+  "sections": [
+    {
+      "section_id": "phq2",
+      "section_name": "Depression Screening",
+      "section_order": 1,
+      "questions": [
+        {
+          "question_id": "PHQ2_Q1",
+          "variable_name": "PHQ2_Q1",
+          "question_text": "Over the past 2 weeks, how often have you felt down, depressed, or hopeless?",
+          "question_order": 1,
+          "required": true,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 0,
+              "label": "Not at all",
+              "score": 0
+            },
+            {
+              "value": 1,
+              "label": "Several days",
+              "score": 1
+            },
+            {
+              "value": 2,
+              "label": "More than half the days",
+              "score": 2
+            },
+            {
+              "value": 3,
+              "label": "Nearly every day",
+              "score": 3
+            },
+            {
+              "value": null,
+              "label": "Prefer not to answer",
+              "score": null
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": {
+            "component": "PHQ2_Total",
+            "min_score": 0,
+            "max_score": 3
+          }
+        },
+        {
+          "question_id": "PHQ2_Q2",
+          "variable_name": "PHQ2_Q2",
+          "question_text": "Over the past 2 weeks, how often have you had little interest or pleasure in doing things?",
+          "question_order": 2,
+          "required": true,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 0,
+              "label": "Not at all",
+              "score": 0
+            },
+            {
+              "value": 1,
+              "label": "Several days",
+              "score": 1
+            },
+            {
+              "value": 2,
+              "label": "More than half the days",
+              "score": 2
+            },
+            {
+              "value": 3,
+              "label": "Nearly every day",
+              "score": 3
+            },
+            {
+              "value": null,
+              "label": "Prefer not to answer",
+              "score": null
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": {
+            "component": "PHQ2_Total",
+            "min_score": 0,
+            "max_score": 3
+          }
+        }
+      ]
+    },
+    {
+      "section_id": "mental_health_history",
+      "section_name": "Mental Health History",
+      "section_order": 2,
+      "questions": [
+        {
+          "question_id": "BPG_MH",
+          "variable_name": "BPG_MH",
+          "prams_variable": "BPG_MH",
+          "prams_label": "Pre-preg -- counseling or tx for MH",
+          "question_text": "Before you got pregnant, did you receive counseling or treatment from a health care worker for depression, anxiety, or other mental health conditions?",
+          "question_order": 3,
+          "required": false,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 2,
+              "label": "Yes",
+              "prams_code": 2,
+              "risk_flag": "HIGH_RISK"
+            },
+            {
+              "value": 1,
+              "label": "No",
+              "prams_code": 1,
+              "risk_flag": null
+            },
+            {
+              "value": null,
+              "label": "Prefer not to answer",
+              "prams_code": null,
+              "risk_flag": null
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": {
+            "component": "High_Risk_Flags",
+            "flag_name": "FLAG_PRIOR_MH",
+            "trigger_condition": "value == 2"
+          }
+        }
+      ]
+    },
+    {
+      "section_id": "health_status",
+      "section_name": "Health Status",
+      "section_order": 3,
+      "questions": [
+        {
+          "question_id": "HTH_GEN",
+          "variable_name": "HTH_GEN",
+          "prams_variable": "HTH_GEN",
+          "prams_label": "General Health",
+          "question_text": "In general, how would you describe your health before you got pregnant?",
+          "question_order": 4,
+          "required": false,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 1,
+              "label": "Excellent",
+              "prams_code": 1,
+              "risk_flag": null
+            },
+            {
+              "value": 2,
+              "label": "Very Good",
+              "prams_code": 2,
+              "risk_flag": null
+            },
+            {
+              "value": 3,
+              "label": "Good",
+              "prams_code": 3,
+              "risk_flag": null
+            },
+            {
+              "value": 4,
+              "label": "Fair",
+              "prams_code": 4,
+              "risk_flag": "HIGH_RISK"
+            },
+            {
+              "value": 5,
+              "label": "Poor",
+              "prams_code": 5,
+              "risk_flag": "HIGH_RISK"
+            },
+            {
+              "value": null,
+              "label": "Prefer not to answer",
+              "prams_code": null,
+              "risk_flag": null
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": {
+            "component": "High_Risk_Flags",
+            "flag_name": "FLAG_POOR_HEALTH",
+            "trigger_condition": "value >= 4"
+          }
+        },
+        {
+          "question_id": "PRE_RX",
+          "variable_name": "PRE_RX",
+          "prams_variable": "PRE_RX",
+          "prams_label": "Pre-pregnancy prescrip meds",
+          "question_text": "In the month before you got pregnant, were you taking any prescription medications?",
+          "question_order": 5,
+          "required": false,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 2,
+              "label": "Yes",
+              "prams_code": 2,
+              "shows_followup": "PRE_RX_MH"
+            },
+            {
+              "value": 1,
+              "label": "No",
+              "prams_code": 1,
+              "shows_followup": null
+            },
+            {
+              "value": null,
+              "label": "Prefer not to answer",
+              "prams_code": null,
+              "shows_followup": null
+            }
+          ],
+          "skip_logic": {
+            "if_value": [1, null],
+            "skip_to": "PRE_EXER"
+          },
+          "risk_scoring": null
+        },
+        {
+          "question_id": "PRE_RX_MH",
+          "variable_name": "PRE_RX_MH",
+          "prams_variable": "Derived from PRE_RX",
+          "question_text": "Were any of these medications for depression, anxiety, or other mental health conditions?",
+          "question_order": 6,
+          "required": false,
+          "type": "single_choice",
+          "conditional": true,
+          "display_condition": {
+            "depends_on": "PRE_RX",
+            "show_if_value": 2
+          },
+          "response_options": [
+            {
+              "value": "Yes",
+              "label": "Yes",
+              "risk_flag": "HIGH_RISK"
+            },
+            {
+              "value": "No",
+              "label": "No",
+              "risk_flag": null
+            },
+            {
+              "value": "Not sure",
+              "label": "Not sure",
+              "risk_flag": "HIGH_RISK"
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": {
+            "component": "High_Risk_Flags",
+            "flag_name": "FLAG_MH_MEDS",
+            "trigger_condition": "value in ['Yes', 'Not sure']"
+          }
+        }
+      ]
+    },
+    {
+      "section_id": "lifestyle_factors",
+      "section_name": "Lifestyle Factors",
+      "section_order": 4,
+      "questions": [
+        {
+          "question_id": "PRE_EXER",
+          "variable_name": "PRE_EXER",
+          "prams_variable": "PRE_EXER",
+          "prams_label": "Pre-pregnancy exercise 3+ days/wk",
+          "question_text": "During the month before you got pregnant, did you exercise for at least 30 minutes on 3 or more days per week?",
+          "question_order": 7,
+          "required": false,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 2,
+              "label": "Yes",
+              "prams_code": 2,
+              "lifestyle_risk": 0
+            },
+            {
+              "value": 1,
+              "label": "No",
+              "prams_code": 1,
+              "lifestyle_risk": 1
+            },
+            {
+              "value": null,
+              "label": "Prefer not to answer",
+              "prams_code": null,
+              "lifestyle_risk": 0
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": {
+            "component": "Lifestyle_Risk",
+            "points_if_true": 1,
+            "trigger_condition": "value == 1"
+          }
+        },
+        {
+          "question_id": "PRE_DIET",
+          "variable_name": "PRE_DIET",
+          "prams_variable": "PRE_DIET",
+          "prams_label": "Pre-pregnancy dieting",
+          "question_text": "In the month before you got pregnant, were you trying to lose weight or control your weight by dieting?",
+          "question_order": 8,
+          "required": false,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 2,
+              "label": "Yes",
+              "prams_code": 2,
+              "lifestyle_risk": 1
+            },
+            {
+              "value": 1,
+              "label": "No",
+              "prams_code": 1,
+              "lifestyle_risk": 0
+            },
+            {
+              "value": null,
+              "label": "Prefer not to answer",
+              "prams_code": null,
+              "lifestyle_risk": 0
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": {
+            "component": "Lifestyle_Risk",
+            "points_if_true": 1,
+            "trigger_condition": "value == 2"
+          }
+        },
+        {
+          "question_id": "OWGT_OBS",
+          "variable_name": "OWGT_OBS",
+          "prams_variable": "OWGT_OBS",
+          "prams_label": "Health problem - overweight/obese",
+          "question_text": "Before you got pregnant, did you have any of the following health problems: overweight or obesity?",
+          "question_order": 9,
+          "required": false,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 2,
+              "label": "Yes",
+              "prams_code": 2,
+              "lifestyle_risk": 1
+            },
+            {
+              "value": 1,
+              "label": "No",
+              "prams_code": 1,
+              "lifestyle_risk": 0
+            },
+            {
+              "value": null,
+              "label": "Prefer not to answer",
+              "prams_code": null,
+              "lifestyle_risk": 0
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": {
+            "component": "Lifestyle_Risk",
+            "points_if_true": 1,
+            "trigger_condition": "value == 2"
+          }
+        }
+      ]
+    },
+    {
+      "section_id": "healthcare_access",
+      "section_name": "Healthcare Access",
+      "section_order": 5,
+      "questions": [
+        {
+          "question_id": "BPG_TALK",
+          "variable_name": "BPG_TALK",
+          "prams_variable": "BPG_TALK",
+          "prams_label": "HCW discussed preparing for pregnancy",
+          "question_text": "Before you got pregnant, did a health care worker talk with you about preparing for pregnancy?",
+          "question_order": 10,
+          "required": false,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 2,
+              "label": "Yes",
+              "prams_code": 2,
+              "routing_flag": "EXISTING_PROVIDER"
+            },
+            {
+              "value": 1,
+              "label": "No",
+              "prams_code": 1,
+              "routing_flag": "NEW_REFERRAL"
+            },
+            {
+              "value": null,
+              "label": "Prefer not to answer",
+              "prams_code": null,
+              "routing_flag": "NEW_REFERRAL"
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": null
+        },
+        {
+          "question_id": "FLU_SRC",
+          "variable_name": "FLU_SRC",
+          "prams_variable": "FLU_SRC",
+          "prams_label": "Where flu shot was given",
+          "question_text": "Where do you typically receive healthcare services? (Select the place you visit most often)",
+          "question_order": 11,
+          "required": false,
+          "type": "single_choice",
+          "response_options": [
+            {
+              "value": 1,
+              "label": "OB/Gyn office",
+              "prams_code": 1,
+              "routing_category": "OBGYN"
+            },
+            {
+              "value": 2,
+              "label": "Family doctor / Primary care physician",
+              "prams_code": 2,
+              "routing_category": "PRIMARY_CARE"
+            },
+            {
+              "value": 3,
+              "label": "Community health clinic",
+              "prams_code": 3,
+              "routing_category": "COMMUNITY_CLINIC"
+            },
+            {
+              "value": 4,
+              "label": "Hospital",
+              "prams_code": 4,
+              "routing_category": "HOSPITAL"
+            },
+            {
+              "value": 5,
+              "label": "Pharmacy",
+              "prams_code": 5,
+              "routing_category": "PHARMACY"
+            },
+            {
+              "value": 6,
+              "label": "Work or school clinic",
+              "prams_code": 6,
+              "routing_category": "WORK_SCHOOL"
+            },
+            {
+              "value": 7,
+              "label": "Other",
+              "prams_code": 7,
+              "routing_category": "OTHER"
+            },
+            {
+              "value": null,
+              "label": "I don't regularly visit any healthcare provider",
+              "prams_code": null,
+              "routing_category": "NO_PROVIDER"
+            }
+          ],
+          "skip_logic": null,
+          "risk_scoring": null
+        }
+      ]
+    }
+  ],
+  "scoring_components": {
+    "PHQ2_Total": {
+      "description": "PHQ-2 Depression Screening Score",
+      "calculation": "Sum of PHQ2_Q1 + PHQ2_Q2",
+      "range": [0, 6],
+      "clinical_cutoff": 3,
+      "interpretation": {
+        "0-2": "Negative screen (low likelihood of depression)",
+        "3-6": "Positive screen (further evaluation recommended)"
+      }
+    },
+    "High_Risk_Flags": {
+      "description": "Count of major risk factors present",
+      "flags": [
+        {
+          "flag_name": "FLAG_PRIOR_MH",
+          "condition": "BPG_MH == 2",
+          "description": "Prior mental health treatment"
+        },
+        {
+          "flag_name": "FLAG_MH_MEDS",
+          "condition": "PRE_RX == 2 AND PRE_RX_MH in ['Yes', 'Not sure']",
+          "description": "Medications for mood/anxiety"
+        },
+        {
+          "flag_name": "FLAG_POOR_HEALTH",
+          "condition": "HTH_GEN >= 4",
+          "description": "Fair or Poor general health"
+        }
+      ],
+      "range": [0, 3]
+    },
+    "Lifestyle_Risk": {
+      "description": "Count of lifestyle risk factors",
+      "factors": [
+        {
+          "factor_name": "No_Exercise",
+          "condition": "PRE_EXER == 1",
+          "points": 1
+        },
+        {
+          "factor_name": "Dieting",
+          "condition": "PRE_DIET == 2",
+          "points": 1
+        },
+        {
+          "factor_name": "Overweight_Obese",
+          "condition": "OWGT_OBS == 2",
+          "points": 1
+        }
+      ],
+      "range": [0, 3]
+    }
+  },
+  "classification_rules": {
+    "HIGH_RISK": {
+      "description": "User meets criteria for high-risk classification",
+      "rules": [
+        {
+          "rule_id": "RULE_1",
+          "name": "Positive PHQ-2 Screen",
+          "condition": "PHQ2_Total >= 3",
+          "priority": 1
+        },
+        {
+          "rule_id": "RULE_2",
+          "name": "Any High-Risk Flag",
+          "condition": "High_Risk_Flags >= 1",
+          "priority": 2
+        },
+        {
+          "rule_id": "RULE_3",
+          "name": "Borderline + Multiple Lifestyle Risks",
+          "condition": "PHQ2_Total == 2 AND Lifestyle_Risk >= 2",
+          "priority": 3
+        }
+      ],
+      "logic": "ANY rule true → HIGH_RISK"
+    },
+    "LOW_RISK": {
+      "description": "User does not meet high-risk criteria",
+      "condition": "NOT HIGH_RISK"
+    }
+  },
+  "routing_logic": {
+    "existing_provider": {
+      "variable": "BPG_TALK",
+      "condition": "value == 2",
+      "action": "Route to existing provider first"
+    },
+    "care_setting_mapping": {
+      "1": {
+        "setting": "OB/Gyn office",
+        "referral_type": "OB/Gyn with integrated behavioral health"
+      },
+      "2": {
+        "setting": "Family doctor",
+        "referral_type": "Primary care with mental health services"
+      },
+      "3": {
+        "setting": "Community health clinic",
+        "referral_type": "FQHC / Public clinics + hotlines"
+      },
+      "4": {
+        "setting": "Hospital",
+        "referral_type": "Hospital-based behavioral health services"
+      },
+      "5": {
+        "setting": "Pharmacy",
+        "referral_type": "Pharmacy walk-in + telehealth"
+      },
+      "6": {
+        "setting": "Work/school",
+        "referral_type": "EAP / Occupational health resources"
+      },
+      "7": {
+        "setting": "Other",
+        "referral_type": "General telehealth + crisis hotlines"
+      },
+      "null": {
+        "setting": "No regular provider",
+        "referral_type": "Telehealth + community resources + crisis hotlines"
+      }
+    }
+  },
+  "crisis_resources": {
+    "always_display": true,
+    "hotlines": [
+      {
+        "name": "National Suicide Prevention Lifeline",
+        "phone": "988",
+        "phone_alternate": "1-800-273-8255",
+        "available": "24/7",
+        "chat_available": true,
+        "text_available": false
+      },
+      {
+        "name": "Crisis Text Line",
+        "text": "HOME to 741741",
+        "available": "24/7",
+        "chat_available": false,
+        "text_available": true
+      },
+      {
+        "name": "Postpartum Support International Helpline",
+        "phone": "1-800-944-4773",
+        "text_en": "800-944-4773",
+        "text_es": "971-203-7773",
+        "available": "24/7",
+        "specialization": "Perinatal mental health"
+      },
+      {
+        "name": "National Maternal Mental Health Hotline",
+        "phone": "1-833-TLC-MAMA",
+        "phone_numeric": "1-833-852-6262",
+        "available": "24/7",
+        "languages": ["English", "Spanish"],
+        "specialization": "Pregnant and postpartum individuals"
+      },
+      {
+        "name": "SAMHSA National Helpline",
+        "phone": "1-800-662-4357",
+        "available": "24/7",
+        "service": "Treatment referral and information"
+      }
+    ]
+  }
+}
