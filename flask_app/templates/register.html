@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Perinatal Mental Health{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-user-plus"></i>
+                <h1>Create Your Account</h1>
+                <p>Start your mental health screening journey today</p>
+            </div>
+
+            <form method="POST" action="/register" class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name"><i class="fas fa-user"></i> First Name</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_name"><i class="fas fa-user"></i> Last Name</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" required autofocus>
+                    <small>We'll use this to log you in and send important notifications</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required minlength="6">
+                    <small>Must be at least 6 characters</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password"><i class="fas fa-lock"></i> Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required minlength="6">
+                </div>
+
+                <div class="form-checkbox">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">
+                        I understand this is a screening tool and not a substitute for professional medical advice.
+                        I consent to my responses being stored securely.
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large btn-block">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="/login">Log in here</a></p>
+            </div>
+        </div>
+
+        <div class="auth-info">
+            <div class="info-card">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 60px; margin-bottom: 1rem;">
+                    <!-- Mother and baby silhouette -->
+                    <ellipse cx="50" cy="90" rx="40" ry="8" fill="rgba(79, 70, 229, 0.1)"/>
+                    <circle cx="40" cy="30" r="10" fill="#4F46E5"/>
+                    <path d="M35 42 Q30 45 30 55 L30 75 Q30 80 35 80 L45 80 Q50 80 50 75 L50 55 Q50 45 45 42 Z" fill="#E0E7FF"/>
+                    <circle cx="60" cy="55" r="8" fill="#818CF8"/>
+                    <path d="M55 65 Q52 68 52 72 L52 80 L68 80 L68 72 Q68 68 65 65 Q62 63 60 63 Q58 63 55 65 Z" fill="#E0E7FF"/>
+                    <path d="M45 55 Q48 58 52 58" stroke="#4F46E5" stroke-width="2" fill="none"/>
+                </svg>
+                <h3>Secure & Private</h3>
+                <p>Your data is encrypted and HIPAA-compliant. We never share your information with third parties.</p>
+            </div>
+
+            <div class="info-card">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 60px; margin-bottom: 1rem;">
+                    <!-- Clock showing quick time -->
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#4F46E5" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="3" fill="#4F46E5"/>
+                    <path d="M50 50 L50 25" stroke="#4F46E5" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M50 50 L65 50" stroke="#818CF8" stroke-width="3" stroke-linecap="round"/>
+                    <text x="50" y="75" text-anchor="middle" fill="#4F46E5" font-size="12" font-weight="bold">10-15 min</text>
+                </svg>
+                <h3>Quick & Easy</h3>
+                <p>Complete your first screening in just 10-15 minutes and get immediate results.</p>
+            </div>
+
+            <div class="info-card">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 60px; margin-bottom: 1rem;">
+                    <!-- Timeline with checkmarks -->
+                    <line x1="20" y1="50" x2="80" y2="50" stroke="#E5E7EB" stroke-width="4"/>
+                    <circle cx="20" cy="50" r="8" fill="#10B981"/>
+                    <circle cx="40" cy="50" r="8" fill="#10B981"/>
+                    <circle cx="60" cy="50" r="8" fill="#4F46E5"/>
+                    <circle cx="80" cy="50" r="8" fill="#E5E7EB"/>
+                    <text x="20" y="54" text-anchor="middle" fill="white" font-size="10">✓</text>
+                    <text x="40" y="54" text-anchor="middle" fill="white" font-size="10">✓</text>
+                </svg>
+                <h3>Track Over Time</h3>
+                <p>Monitor your mental health journey with saved screening history and personalized insights.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

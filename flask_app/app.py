@@ -3,22 +3,45 @@ Perinatal Mental Health Screening Application
 Flask Web Application
 """
 
-from flask import Flask, render_template, request, jsonify, session, redirect
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 from datetime import datetime
 import json
 import os
 from pathlib import Path
+from baseline_data import merge_with_new_responses
+from database import (
+    init_db, create_user, verify_password, update_last_login,
+    save_screening_response, get_user_screening_history,
+    get_latest_screening, get_all_screening_responses,
+    get_user_by_id, get_user_stats
+)
+from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-change-in-production'  # Change this in production!
+app.secret_key = 'your-secret-key-change-in-production-use-random-string'  # Change this!
+
+# Initialize database
+init_db()
 
 # Load questions configuration
 config_path = Path(__file__).parent.parent / 'questions_config.json'
 with open(config_path, 'r') as f:
     QUESTIONS_CONFIG = json.load(f)
 
-# Store responses in memory (in production, use a database)
-responses_db = []
+
+# ============================================================================
+# AUTHENTICATION DECORATOR
+# ============================================================================
+
+def login_required(f):
+    """Decorator to require login for routes"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Please log in to access this page.', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 # ============================================================================
@@ -155,7 +178,89 @@ def determine_routing(bpg_talk, flu_src):
 
 
 # ============================================================================
-# ROUTES
+# AUTHENTICATION ROUTES
+# ============================================================================
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """User registration"""
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+
+        # Validation
+        if not email or not password:
+            flash('Email and password are required.', 'danger')
+            return redirect(url_for('register'))
+
+        if password != confirm_password:
+            flash('Passwords do not match.', 'danger')
+            return redirect(url_for('register'))
+
+        if len(password) < 6:
+            flash('Password must be at least 6 characters.', 'danger')
+            return redirect(url_for('register'))
+
+        # Create user
+        user_id = create_user(email, password, first_name, last_name)
+
+        if user_id:
+            flash('Account created successfully! Please log in.', 'success')
+            return redirect(url_for('login'))
+        else:
+            flash('Email already exists. Please log in.', 'warning')
+            return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """User login"""
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = verify_password(email, password)
+
+        if user:
+            session['user_id'] = user['id']
+            session['user_email'] = user['email']
+            session['user_name'] = user['first_name'] or email.split('@')[0]
+            update_last_login(user['id'])
+            flash(f'Welcome back, {session["user_name"]}!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid email or password.', 'danger')
+            return redirect(url_for('login'))
+
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    """User logout"""
+    session.clear()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('index'))
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    """User profile page"""
+    user = get_user_by_id(session['user_id'])
+    stats = get_user_stats(session['user_id'])
+    history = get_user_screening_history(session['user_id'])
+
+    return render_template('profile.html', user=user, stats=stats, history=history)
+
+
+# ============================================================================
+# MAIN ROUTES
 # ============================================================================
 
 @app.route('/')
@@ -165,6 +270,7 @@ def index():
 
 
 @app.route('/screening')
+@login_required
 def screening():
     """Screening questionnaire page"""
     questions = get_all_questions()
@@ -179,6 +285,7 @@ def api_questions():
 
 
 @app.route('/api/submit', methods=['POST'])
+@login_required
 def api_submit():
     """API endpoint to submit responses and calculate risk"""
     data = request.json
@@ -193,17 +300,18 @@ def api_submit():
         responses.get('FLU_SRC')
     )
 
-    # Store response (with timestamp)
-    response_record = {
+    # Save to database
+    user_id = session.get('user_id')
+    response_id = save_screening_response(user_id, responses, risk_result, routing)
+
+    # Store in session for results page
+    session['last_result'] = {
+        'id': response_id,
         'timestamp': datetime.now().isoformat(),
         'responses': responses,
         'risk_result': risk_result,
         'routing': routing
     }
-    responses_db.append(response_record)
-
-    # Store in session for results page
-    session['last_result'] = response_record
 
     return jsonify({
         'success': True,
@@ -232,69 +340,15 @@ def dashboard():
 
 @app.route('/api/analytics')
 def api_analytics():
-    """API endpoint for dashboard analytics"""
+    """API endpoint for dashboard analytics - includes PRAMS baseline + new responses"""
 
-    if not responses_db:
-        return jsonify({
-            'total_responses': 0,
-            'risk_distribution': {},
-            'phq2_distribution': {},
-            'risk_factors': {},
-            'care_settings': {}
-        })
+    # Get all screening responses from database
+    all_responses = get_all_screening_responses()
 
-    # Calculate analytics
-    total = len(responses_db)
+    # Merge baseline PRAMS data with new responses
+    analytics = merge_with_new_responses(all_responses)
 
-    # Risk distribution
-    risk_dist = {'HIGH_RISK': 0, 'LOW_RISK': 0}
-    for record in responses_db:
-        risk_dist[record['risk_result']['classification']] += 1
-
-    # PHQ-2 distribution
-    phq2_dist = {}
-    for record in responses_db:
-        score = record['risk_result']['phq2_total']
-        phq2_dist[score] = phq2_dist.get(score, 0) + 1
-
-    # Risk factors prevalence
-    risk_factors = {
-        'prior_mh': 0,
-        'mh_meds': 0,
-        'poor_health': 0,
-        'no_exercise': 0,
-        'dieting': 0,
-        'overweight': 0
-    }
-
-    for record in responses_db:
-        responses = record['responses']
-        if responses.get('BPG_MH') == '2':
-            risk_factors['prior_mh'] += 1
-        if responses.get('PRE_RX') == '2' and responses.get('PRE_RX_MH') in ['Yes', 'Not sure']:
-            risk_factors['mh_meds'] += 1
-        if responses.get('HTH_GEN') in ['4', '5']:
-            risk_factors['poor_health'] += 1
-        if responses.get('PRE_EXER') == '1':
-            risk_factors['no_exercise'] += 1
-        if responses.get('PRE_DIET') == '2':
-            risk_factors['dieting'] += 1
-        if responses.get('OWGT_OBS') == '2':
-            risk_factors['overweight'] += 1
-
-    # Care settings
-    care_settings_dist = {}
-    for record in responses_db:
-        setting = record['routing']['setting_name']
-        care_settings_dist[setting] = care_settings_dist.get(setting, 0) + 1
-
-    return jsonify({
-        'total_responses': total,
-        'risk_distribution': risk_dist,
-        'phq2_distribution': phq2_dist,
-        'risk_factors': risk_factors,
-        'care_settings': care_settings_dist
-    })
+    return jsonify(analytics)
 
 
 @app.route('/resources')

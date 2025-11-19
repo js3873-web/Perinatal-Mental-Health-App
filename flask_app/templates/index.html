@@ -6,6 +6,9 @@
 <div class="hero">
     <div class="container">
         <div class="hero-content">
+            <div class="hero-illustration">
+                <img src="{{ url_for('static', filename='hero-image.png') }}" alt="Perinatal Mental Health Illustration">
+            </div>
             <h1>Perinatal Mental Health Screening</h1>
             <p class="hero-subtitle">A confidential screening to help identify your risk for perinatal depression or anxiety</p>
 
@@ -41,7 +44,17 @@
         <div class="cards-grid">
             <div class="card">
                 <div class="card-icon">
-                    <i class="fas fa-file-lines"></i>
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Clipboard with checklist -->
+                        <rect x="25" y="15" width="50" height="70" rx="5" fill="#E0E7FF" stroke="#4F46E5" stroke-width="2"/>
+                        <rect x="35" y="10" width="30" height="10" rx="5" fill="#4F46E5"/>
+                        <line x1="35" y1="30" x2="65" y2="30" stroke="#4F46E5" stroke-width="2"/>
+                        <line x1="35" y1="45" x2="65" y2="45" stroke="#4F46E5" stroke-width="2"/>
+                        <line x1="35" y1="60" x2="65" y2="60" stroke="#4F46E5" stroke-width="2"/>
+                        <circle cx="32" cy="30" r="3" fill="#10B981"/>
+                        <circle cx="32" cy="45" r="3" fill="#10B981"/>
+                        <circle cx="32" cy="60" r="3" fill="#E5E7EB"/>
+                    </svg>
                 </div>
                 <h3>1. Answer Questions</h3>
                 <p>Complete a brief 10-question screening covering your mental health, lifestyle, and healthcare access.</p>
@@ -49,7 +62,13 @@
 
             <div class="card">
                 <div class="card-icon">
-                    <i class="fas fa-chart-line"></i>
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Results chart -->
+                        <circle cx="50" cy="50" r="35" fill="none" stroke="#E5E7EB" stroke-width="8"/>
+                        <circle cx="50" cy="50" r="35" fill="none" stroke="#4F46E5" stroke-width="8"
+                                stroke-dasharray="70 150" transform="rotate(-90 50 50)"/>
+                        <text x="50" y="55" text-anchor="middle" fill="#4F46E5" font-size="20" font-weight="bold">✓</text>
+                    </svg>
                 </div>
                 <h3>2. Get Your Results</h3>
                 <p>Receive an immediate risk assessment based on validated clinical tools (PHQ-2) and evidence-based guidelines.</p>
@@ -57,7 +76,15 @@
 
             <div class="card">
                 <div class="card-icon">
-                    <i class="fas fa-hands-helping"></i>
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Doctor/healthcare provider -->
+                        <circle cx="50" cy="30" r="12" fill="#4F46E5"/>
+                        <path d="M35 45 Q35 42 38 42 L62 42 Q65 42 65 45 L65 70 Q65 75 60 75 L40 75 Q35 75 35 70 Z" fill="#E0E7FF"/>
+                        <rect x="45" y="40" width="10" height="15" fill="#EF4444"/>
+                        <rect x="47.5" y="45" width="5" height="5" fill="white"/>
+                        <path d="M35 70 L30 85 L40 85 L40 75" fill="#4F46E5"/>
+                        <path d="M65 70 L70 85 L60 85 L60 75" fill="#4F46E5"/>
+                    </svg>
                 </div>
                 <h3>3. Access Resources</h3>
                 <p>Get personalized referrals to healthcare providers and mental health resources tailored to your situation.</p>

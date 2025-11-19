@@ -31,9 +31,31 @@
                 <li><a href="/screening" class="{% if request.path == '/screening' %}active{% endif %}">Screening</a></li>
                 <li><a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a></li>
                 <li><a href="/resources" class="{% if request.path == '/resources' %}active{% endif %}">Resources</a></li>
+                {% if session.user_id %}
+                <li><a href="/profile" class="{% if request.path == '/profile' %}active{% endif %}"><i class="fas fa-user"></i> {{ session.user_name }}</a></li>
+                <li><a href="/logout">Logout</a></li>
+                {% else %}
+                <li><a href="/login" class="{% if request.path == '/login' %}active{% endif %}">Login</a></li>
+                <li><a href="/register" class="{% if request.path == '/register' %}active{% endif %}">Register</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'danger' %}exclamation-circle{% elif category == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                        <button onclick="this.parentElement.remove()" class="alert-close">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
     <!-- Main Content -->
     <main>

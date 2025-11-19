@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - Perinatal Mental Health{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="profile-info">
+                <h1>{{ user.first_name or 'User' }} {{ user.last_name or '' }}</h1>
+                <p>{{ user.email }}</p>
+                <p class="text-muted">Member since {{ user.created_at[:10] }}</p>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="profile-stats">
+            <div class="stat-card-profile">
+                <i class="fas fa-clipboard-check"></i>
+                <h3>{{ stats.total_screenings }}</h3>
+                <p>Total Screenings</p>
+            </div>
+
+            {% if stats.first_screening %}
+            <div class="stat-card-profile">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>{{ stats.first_screening[:10] }}</h3>
+                <p>First Screening</p>
+            </div>
+            {% endif %}
+
+            {% if stats.last_screening %}
+            <div class="stat-card-profile">
+                <i class="fas fa-clock"></i>
+                <h3>{{ stats.last_screening[:10] }}</h3>
+                <p>Last Screening</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Screening History -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-history"></i> Screening History</h2>
+            </div>
+            <div class="card-body">
+                {% if history %}
+                <div class="history-list">
+                    {% for screening in history %}
+                    <div class="history-item">
+                        <div class="history-date">
+                            <i class="fas fa-calendar"></i>
+                            {{ screening.created_at[:10] }}
+                            <span class="history-time">{{ screening.created_at[11:16] }}</span>
+                        </div>
+
+                        <div class="history-result">
+                            <div class="result-badge-small {% if screening.risk_result.classification == 'HIGH_RISK' %}risk-high{% else %}risk-low{% endif %}">
+                                {% if screening.risk_result.classification == 'HIGH_RISK' %}
+                                <i class="fas fa-exclamation-triangle"></i> HIGH RISK
+                                {% else %}
+                                <i class="fas fa-check-circle"></i> LOW RISK
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="history-scores">
+                            <span class="score-badge">PHQ-2: {{ screening.risk_result.phq2_total }}/6</span>
+                            <span class="score-badge">Flags: {{ screening.risk_result.high_risk_flags }}</span>
+                            <span class="score-badge">Lifestyle: {{ screening.risk_result.lifestyle_risk }}/3</span>
+                        </div>
+
+                        <div class="history-actions">
+                            <button onclick="viewDetails({{ screening.id }})" class="btn btn-secondary btn-small">
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-clipboard"></i>
+                    <h3>No Screening History Yet</h3>
+                    <p>Complete your first screening to start tracking your mental health journey.</p>
+                    <a href="/screening" class="btn btn-primary">
+                        <i class="fas fa-play-circle"></i> Start Screening
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="profile-actions">
+            <a href="/screening" class="btn btn-primary btn-large">
+                <i class="fas fa-clipboard-check"></i> Take New Screening
+            </a>
+            <a href="/resources" class="btn btn-secondary">
+                <i class="fas fa-book-medical"></i> View Resources
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+function viewDetails(screeningId) {
+    // In a full implementation, this would open a modal with detailed results
+    alert('Detailed view for screening #' + screeningId + ' - Feature coming soon!');
+}
+</script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Perinatal Mental Health{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-sign-in-alt"></i>
+                <h1>Welcome Back</h1>
+                <p>Log in to access your mental health screening</p>
+            </div>
+
+            <form method="POST" action="/login" class="auth-form">
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Log In
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="/register">Create one now</a></p>
+            </div>
+        </div>
+
+        <div class="auth-info">
+            <div class="info-card">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 60px; margin-bottom: 1rem;">
+                    <!-- Shield with lock -->
+                    <path d="M50 10 L20 25 L20 50 Q20 75 50 90 Q80 75 80 50 L80 25 Z" fill="#E0E7FF" stroke="#4F46E5" stroke-width="2"/>
+                    <rect x="42" y="45" width="16" height="20" rx="2" fill="#4F46E5"/>
+                    <circle cx="50" cy="42" r="8" fill="none" stroke="#4F46E5" stroke-width="3"/>
+                    <path d="M50 52 L50 58" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                <h3>Your Privacy Matters</h3>
+                <p>All your screening data is encrypted and stored securely. We never share your personal information.</p>
+            </div>
+
+            <div class="info-card">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 60px; margin-bottom: 1rem;">
+                    <!-- Progress chart -->
+                    <rect x="20" y="70" width="12" height="20" fill="#4F46E5" rx="2"/>
+                    <rect x="37" y="55" width="12" height="35" fill="#818CF8" rx="2"/>
+                    <rect x="54" y="40" width="12" height="50" fill="#4F46E5" rx="2"/>
+                    <rect x="71" y="25" width="12" height="65" fill="#818CF8" rx="2"/>
+                    <path d="M26 65 L43 50 L60 35 L77 20" stroke="#10B981" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </svg>
+                <h3>Track Your Progress</h3>
+                <p>Log in to view your screening history and track changes over time.</p>
+            </div>
+
+            <div class="info-card">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 60px; margin-bottom: 1rem;">
+                    <!-- Heart with care -->
+                    <path d="M50 85 C20 65, 15 40, 30 25 C40 15, 50 20, 50 30 C50 20, 60 15, 70 25 C85 40, 80 65, 50 85 Z" fill="#EF4444"/>
+                    <circle cx="40" cy="30" r="3" fill="white" opacity="0.8"/>
+                    <path d="M35 45 Q40 50 45 45" stroke="white" stroke-width="2" fill="none" opacity="0.6"/>
+                </svg>
+                <h3>Confidential Support</h3>
+                <p>Your mental health journey is personal. We're here to support you every step of the way.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
